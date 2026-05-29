@@ -12,11 +12,9 @@ export default function Layout({ children }) {
         <div style={styles.inner}>{children}</div>
       </div>
 
-      {/* ⭐ MOBILE BOTTOM NAV */}
+      {/* ⭐ MOBILE BOTTOM NAV — ΜΟΝΟ LIST */}
       <div className="mobile-nav">
         <a href="/">{/* List */}List</a>
-        <a href="/stores">{/* Stores */}Stores</a>
-        <a href="/settings">{/* Settings */}Settings</a>
       </div>
 
     </div>
