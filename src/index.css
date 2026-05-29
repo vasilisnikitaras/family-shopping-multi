@@ -1,3 +1,10 @@
+/* Force-enable transitions in production */
+.store-list-wrapper,
+.store-list-wrapper * {
+  transition: all 0.3s ease !important;
+  will-change: opacity, transform, max-height;
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -659,6 +666,39 @@ select:hover {
 .store-list-wrapper * {
   transition: all 0.3s ease !important;
 }
+.store-list-wrapper {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.25s ease;
+}
+
+.store-list-wrapper.open {
+  max-height: 600px;
+  opacity: 1;
+}
+
+.store-row {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.store-list-wrapper.open .store-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.store-row:nth-child(1) { transition-delay: 0.30s; }
+.store-row:nth-child(2) { transition-delay: 0.35s; }
+.store-row:nth-child(3) { transition-delay: 0.40s; }
+.store-row:nth-child(4) { transition-delay: 0.45s; }
+.store-row:nth-child(5) { transition-delay: 0.50s; }
+.store-row:nth-child(6) { transition-delay: 0.55s; }
+.store-row:nth-child(7) { transition-delay: 0.60s; }
+.store-row:nth-child(8) { transition-delay: 0.65s; }
+.store-row:nth-child(9) { transition-delay: 0.70s; }
+.store-row:nth-child(10) { transition-delay: 0.75s; }
 .store-list-wrapper {
   overflow: hidden;
   max-height: 0;
