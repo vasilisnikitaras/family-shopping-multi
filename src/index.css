@@ -519,3 +519,136 @@ select:hover {
   color: #fff !important;
   border-color: #7c3aed !important;
 }
+.store-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: var(--card);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.delete-store-btn {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.store-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.store-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card);
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.store-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.delete-store-btn {
+  background: #c62828;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s;
+}
+
+.delete-store-btn:hover {
+  background: #b71c1c;
+  transform: scale(1.05);
+}
+.store-list-wrapper {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+  max-height: 0;
+  opacity: 0;
+}
+
+.store-list-wrapper.open {
+  max-height: 600px; /* αρκετό για πολλά stores */
+  opacity: 1;
+}
+/* ⭐ Base hidden state for each store row */
+.store-row {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ⭐ When wrapper is open → animate rows */
+.store-list-wrapper.open .store-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ⭐ Stagger delays (iPhone-style) */
+.store-row:nth-child(1) { transition-delay: 0.05s; }
+.store-row:nth-child(2) { transition-delay: 0.10s; }
+.store-row:nth-child(3) { transition-delay: 0.15s; }
+.store-row:nth-child(4) { transition-delay: 0.20s; }
+.store-row:nth-child(5) { transition-delay: 0.25s; }
+.store-row:nth-child(6) { transition-delay: 0.30s; }
+.store-row:nth-child(7) { transition-delay: 0.35s; }
+.store-row:nth-child(8) { transition-delay: 0.40s; }
+.store-row:nth-child(9) { transition-delay: 0.45s; }
+.store-row:nth-child(10) { transition-delay: 0.50s; }
+.store-list-wrapper.open {
+  background: red !important;
+}
+/* ⭐ Wrapper slide animation */
+.store-list-wrapper {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.25s ease;
+}
+
+.store-list-wrapper.open {
+  max-height: 600px;
+  opacity: 1;
+}
+
+/* ⭐ Base hidden state for each store row */
+.store-row {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ⭐ Delay stagger start until slide finishes */
+.store-list-wrapper.open .store-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ⭐ Stagger delays (start AFTER slide finishes) */
+.store-row:nth-child(1) { transition-delay: 0.30s; }
+.store-row:nth-child(2) { transition-delay: 0.35s; }
+.store-row:nth-child(3) { transition-delay: 0.40s; }
+.store-row:nth-child(4) { transition-delay: 0.45s; }
+.store-row:nth-child(5) { transition-delay: 0.50s; }
+.store-row:nth-child(6) { transition-delay: 0.55s; }
+.store-row:nth-child(7) { transition-delay: 0.60s; }
+.store-row:nth-child(8) { transition-delay: 0.65s; }
+.store-row:nth-child(9) { transition-delay: 0.70s; }
+.store-row:nth-child(10) { transition-delay: 0.75s; }

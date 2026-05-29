@@ -10,6 +10,7 @@ import AddStoreForm from "./components/AddStoreForm";
 import Notification from "./components/Notification";
 import ConfirmModal from "./components/ConfirmModal";
 import ShoppingList from "./components/ShoppingList";
+import StoreList from "./components/StoreList";
 
 // Translations (10 languages)
 import en from "./locales/en.json";
@@ -33,8 +34,21 @@ export default function App() {
   const [language, setLanguage] = useState("en");
   const [theme, setTheme] = useState("light");
   const [notification, setNotification] = useState({ message: "", type: "" });
+
+  // Item delete modal
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+
+  // Store delete modal ⭐
+  const [storeConfirmOpen, setStoreConfirmOpen] = useState(false);
+  const [storeToDelete, setStoreToDelete] = useState(null);
+
+  // Debug
+  console.log("SUPABASE URL:", import.meta.env.VITE_SUPABASE_URL);
+  console.log("SUPABASE KEY:", import.meta.env.VITE_SUPABASE_ANON_KEY);
+
+  // ⭐ Collapsible Stores
+  const [showStores, setShowStores] = useState(false);
 
   // Translations
   const tBase = TRANSLATIONS[language] || TRANSLATIONS.en;
@@ -112,7 +126,7 @@ export default function App() {
       {
         name,
         quantity,
-        store_id, // ⭐ FIXED — περνάει το uuid σωστά
+        store_id,
         family_room: FAMILY_ROOM,
         is_checked: false
       }
@@ -130,7 +144,7 @@ export default function App() {
   const handleAddStore = async (storeName) => {
     const { error } = await supabase.from("stores_v2").insert([
       {
-        store_name: storeName // ⭐ FIXED — σωστό πεδίο
+        store_name: storeName
       }
     ]);
 
@@ -139,8 +153,33 @@ export default function App() {
       showNotification("Failed to add store", "error");
     } else {
       showNotification("Store added", "success");
-      loadStores(); // ⭐ FIXED — ανανεώνει dropdown
+      loadStores();
     }
+  };
+
+  // ⭐ ASK delete store (opens modal)
+  const askDeleteStore = (store) => {
+    setStoreToDelete(store);
+    setStoreConfirmOpen(true);
+  };
+
+  // ⭐ CONFIRM delete store
+  const handleConfirmDeleteStore = async () => {
+    const { error } = await supabase
+      .from("stores_v2")
+      .delete()
+      .eq("id", storeToDelete.id);
+
+    if (error) {
+      console.error(error);
+      showNotification("Failed to delete store", "error");
+    } else {
+      showNotification("Store deleted", "success");
+      loadStores();
+    }
+
+    setStoreConfirmOpen(false);
+    setStoreToDelete(null);
   };
 
   // Toggle bought
@@ -194,6 +233,21 @@ export default function App() {
         {/* ADD STORE */}
         <AddStoreForm onAddStore={handleAddStore} t={t} />
 
+        {/* ⭐ COLLAPSIBLE STORE LIST */}
+        <button
+          className="toggle-store-btn"
+          onClick={() => setShowStores(!showStores)}
+        >
+          {showStores ? "Hide Stores ▲" : "Manage Stores ▼"}
+        </button>
+
+        {/* ⭐ ANIMATED STORE LIST WRAPPER */}
+        <div className={`store-list-wrapper ${showStores ? "open" : ""}`}>
+          {showStores && (
+            <StoreList stores={stores} onDelete={askDeleteStore} />
+          )}
+        </div>
+
         {/* ADD ITEM */}
         <AddItemForm onAdd={handleAddItem} stores={stores} t={t} />
 
@@ -211,10 +265,19 @@ export default function App() {
 
       <Notification message={notification.message} type={notification.type} />
 
+      {/* ITEM DELETE MODAL */}
       <ConfirmModal
         open={confirmOpen}
         onConfirm={handleConfirmDelete}
         onCancel={() => setConfirmOpen(false)}
+      />
+
+      {/* ⭐ STORE DELETE MODAL */}
+      <ConfirmModal
+        open={storeConfirmOpen}
+        onConfirm={handleConfirmDeleteStore}
+        onCancel={() => setStoreConfirmOpen(false)}
+        message="Are you sure you want to delete this store?"
       />
     </Layout>
   );
